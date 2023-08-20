@@ -6,18 +6,21 @@ from cv2 import imwrite
 from core.encoder import RubiesEncoder
 from core.decoder import RubiesDecoder
 
+CARRIER_PATH = "example_images/carrier.png"
+SECRET_A_PATH = "example_images/flag_first_part.png"
+SECRET_B_PATH = "example_images/flag_second_part.png"
 
 if __name__ == "__main__":
     # Create an encoder instance with carrier image.
-    encoder = RubiesEncoder("example_images/carrier.png", secret_size=(500, 500))
+    encoder = RubiesEncoder(CARRIER_PATH, secret_size=(500, 500))
     # Encode the secret images onto carrier.
-    encoded_rgb = encoder.encode("example_images/flag_first_part.png", "example_images/flag_second_part.png")
+    encoded_rgb = encoder.encode(SECRET_A_PATH, SECRET_B_PATH)
     # Save the encoded image.
     imwrite("encoded_image.png", encoded_rgb)
     print("Encoded image saved successfully.")
 
     # Create a decoder instance with encoded image and carrier image.
-    decoder = RubiesDecoder("encoded_image.png", original_image_path="example_images/carrier.jpg")
+    decoder = RubiesDecoder("encoded_image.png", original_image_path=CARRIER_PATH)
     # Decode the secret images from the encoded image.
     secret_image_a, secret_image_b = decoder.decode(secret_image_sizes=(500, 500))
     # Save the secret images.
