@@ -9,15 +9,15 @@ from core.decoder import RubiesDecoder
 
 if __name__ == "__main__":
     # Create an encoder instance with carrier image.
-    encoder = RubiesEncoder("carrier.jpg", secret_size=(500, 500))
+    encoder = RubiesEncoder("example_images/carrier.png", secret_size=(500, 500))
     # Encode the secret images onto carrier.
-    encoded_rgb = encoder.encode("flag_first_part.png", "flag_second_part.png")
+    encoded_rgb = encoder.encode("example_images/flag_first_part.png", "example_images/flag_second_part.png")
     # Save the encoded image.
     imwrite("encoded_image.png", encoded_rgb)
     print("Encoded image saved successfully.")
 
     # Create a decoder instance with encoded image and carrier image.
-    decoder = RubiesDecoder("encoded_image.png", original_image_path="carrier.jpg")
+    decoder = RubiesDecoder("encoded_image.png", original_image_path="example_images/carrier.jpg")
     # Decode the secret images from the encoded image.
     secret_image_a, secret_image_b = decoder.decode(secret_image_sizes=(500, 500))
     # Save the secret images.
