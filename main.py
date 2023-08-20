@@ -7,8 +7,8 @@ from core.encoder import RubiesEncoder
 from core.decoder import RubiesDecoder
 
 CARRIER_PATH = "example_images/carrier.png"
-SECRET_A_PATH = "example_images/flag_first_part.png"
-SECRET_B_PATH = "example_images/flag_second_part.png"
+SECRET_A_PATH = "example_images/lenna.png"
+SECRET_B_PATH = "example_images/parrots.png"
 
 if __name__ == "__main__":
     # Create an encoder instance with carrier image.

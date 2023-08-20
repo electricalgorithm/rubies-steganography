@@ -49,7 +49,5 @@ class RubiesDecoder:
     def _deinsert(whole_image, secret_image_sizes) -> np.ndarray:
         """It crops the secret images from the whole image."""
         v_pad = (whole_image.shape[0] - secret_image_sizes[0]) // 2
-        h_pad = (whole_image.shape[1] - secret_image_sizes[1]) // 2
-        return whole_image[
-            v_pad : v_pad + secret_image_sizes[0], h_pad : h_pad + secret_image_sizes[1]
-        ] // 100
+        h_pad = whole_image.shape[1] - secret_image_sizes[1]
+        return whole_image[v_pad : v_pad + secret_image_sizes[0], h_pad - 1 : -1] // 100

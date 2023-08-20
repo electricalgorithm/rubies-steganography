@@ -73,7 +73,7 @@ class RubiesEncoder:
 
         new_chroma_mags[
             v_pad : (v_pad + secret_image.shape[0]),
-            h_pad : (h_pad + secret_image.shape[1]),
+            h_pad - 1 : -1,
         ] += secret_image
 
         return new_chroma_mags

@@ -21,7 +21,9 @@ class Utilities:
     def calculate_padding(max_elem: np.ndarray, min_elem: np.ndarray) -> list[int]:
         """It calculates the padding."""
         vertical_padding = (max_elem.shape[0] - min_elem.shape[0]) // 2
-        horizontal_padding = (max_elem.shape[1] - min_elem.shape[1]) // 2
+        horizontal_padding = max_elem.shape[1] - min_elem.shape[1]
+        # vertical_padding = (max_elem.shape[0] - min_elem.shape[0]) // 2
+        # horizontal_padding = (max_elem.shape[1] - min_elem.shape[1]) // 2
         return vertical_padding, horizontal_padding
 
     @staticmethod
