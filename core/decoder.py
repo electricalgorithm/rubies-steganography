@@ -30,8 +30,8 @@ class RubiesDecoder:
     def decode(self, secret_image_sizes: tuple[int]) -> tuple[np.ndarray]:
         """It decodes the secret images from each chroma component."""
         # Crop the secret images.
-        secret_image_a = self._crop(self._diff_a, secret_image_sizes)
-        secret_image_b = self._crop(self._diff_b, secret_image_sizes)
+        secret_image_a = self._deinsert(self._diff_a, secret_image_sizes)
+        secret_image_b = self._deinsert(self._diff_b, secret_image_sizes)
 
         # Scale back the secret images.
         secret_image_a = Utilities.scale_back_from_float64_to_uint8(secret_image_a)
@@ -46,10 +46,10 @@ class RubiesDecoder:
         return modified_mag - original_mag
 
     @staticmethod
-    def _crop(whole_image, secret_image_sizes) -> np.ndarray:
+    def _deinsert(whole_image, secret_image_sizes) -> np.ndarray:
         """It crops the secret images from the whole image."""
         v_pad = (whole_image.shape[0] - secret_image_sizes[0]) // 2
         h_pad = (whole_image.shape[1] - secret_image_sizes[1]) // 2
         return whole_image[
             v_pad : v_pad + secret_image_sizes[0], h_pad : h_pad + secret_image_sizes[1]
-        ]
+        ] // 100

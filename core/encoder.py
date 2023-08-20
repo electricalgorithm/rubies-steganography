@@ -51,20 +51,29 @@ class RubiesEncoder:
         else:
             raise ValueError("Invalid chroma component.")
 
+        # Copy the magnitude spectum.
+        new_chroma_mag = chroma_mag.copy()
+
+        # Embed the secret image by adding on top of the freq magnitudes.
+        return self._insert(new_chroma_mag, secret_image)
+
+    @staticmethod
+    def _insert(new_chroma_mags: np.ndarray, secret_image: np.ndarray) -> np.ndarray:
+        """This is the logic where insertation has done."""
         # Calculate the padding.
-        v_pad, h_pad = Utilities.calculate_padding(chroma_mag, secret_image)
+        v_pad, h_pad = Utilities.calculate_padding(new_chroma_mags, secret_image)
 
         # Check if the secret image is too big to embed.
         if v_pad < 0 or h_pad < 0:
             raise ValueError("Secret image is too big to embed.")
 
-        # Copy the magnitude spectum.
-        new_chroma_mag = chroma_mag.copy()
-
         # Embed the secret image by adding on top of the freq magnitudes.
-        new_chroma_mag[
+        secret_image = secret_image.astype(np.float64)
+        secret_image *= 100
+
+        new_chroma_mags[
             v_pad : (v_pad + secret_image.shape[0]),
             h_pad : (h_pad + secret_image.shape[1]),
         ] += secret_image
 
-        return new_chroma_mag
+        return new_chroma_mags
