@@ -70,6 +70,9 @@ class RubiesEncoder:
         # Embed the secret image by adding on top of the freq magnitudes.
         secret_image = secret_image.astype(np.float64)
         secret_image *= 100
+        # Add luminance to the secret image since
+        # decoder will eliminate some.
+        secret_image += 5000
 
         new_chroma_mags[
             v_pad : (v_pad + secret_image.shape[0]),
