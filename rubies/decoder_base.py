@@ -23,11 +23,11 @@ class RubiesDecoder:
         self._diff_a = self._extract_difference(_enc_a_mag)
         self._diff_b = self._extract_difference(_enc_b_mag)
     
-    def decode(self, *args) -> tuple[np.ndarray]:
+    def decode(self, **kwargs) -> tuple[np.ndarray]:
         """It decodes the secret images from each chroma component."""
         # Crop the secret images.
-        secret_image_a = self._deinsert(self._diff_a, *args)
-        secret_image_b = self._deinsert(self._diff_b, *args)
+        secret_image_a = self._deinsert(self._diff_a, **kwargs)
+        secret_image_b = self._deinsert(self._diff_b, **kwargs)
 
         # Scale back the secret images.
         secret_image_a = Utilities.scale_back_from_float64_to_uint8(secret_image_a)
