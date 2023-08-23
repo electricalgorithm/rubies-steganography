@@ -20,9 +20,9 @@ if __name__ == "__main__":
     print("Encoded image saved successfully.")
 
     # Create a decoder instance with encoded image and carrier image.
-    decoder = RubiesDecoder("encoded_image.png", original_image_path=CARRIER_PATH)
+    decoder = RubiesDecoder("encoded_image.png")
     # Decode the secret images from the encoded image.
-    secret_image_a, secret_image_b = decoder.decode(secret_image_sizes=(500, 500))
+    secret_image_a, secret_image_b = decoder.decode()
     # Save the secret images.
     imwrite("secret_image_a.png", secret_image_a)
     imwrite("secret_image_b.png", secret_image_b)
