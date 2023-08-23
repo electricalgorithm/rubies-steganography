@@ -65,6 +65,9 @@ class Utilities:
     @staticmethod
     def save_image(image: np.ndarray, path: str) -> None:
         """It saves the image."""
+        # If the image path is .jpg, raise an error.
+        if path.endswith(".jpg") or path.endswith(".jpeg"):
+            raise ValueError("Please use loseless image type to save.")
         cv2.imwrite(path, image)
 
     @staticmethod
