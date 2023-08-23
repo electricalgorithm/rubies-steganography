@@ -4,6 +4,7 @@ secret images from one image.
 """
 import numpy as np
 from core.utils import Utilities
+from core.extractor import ImageExtractor
 
 
 class RubiesDecoder:
@@ -23,11 +24,11 @@ class RubiesDecoder:
         self._diff_a = self._extract_difference(_enc_a_mag)
         self._diff_b = self._extract_difference(_enc_b_mag)
 
-    def decode(self, secret_image_sizes: tuple[int]) -> tuple[np.ndarray]:
+    def decode(self) -> tuple[np.ndarray]:
         """It decodes the secret images from each chroma component."""
         # Crop the secret images.
-        secret_image_a = self._deinsert(self._diff_a, secret_image_sizes)
-        secret_image_b = self._deinsert(self._diff_b, secret_image_sizes)
+        secret_image_a = self._deinsert(self._diff_a)
+        secret_image_b = self._deinsert(self._diff_b)
 
         # Scale back the secret images.
         secret_image_a = Utilities.scale_back_from_float64_to_uint8(secret_image_a)
@@ -49,8 +50,6 @@ class RubiesDecoder:
         return modified_mag - np.mean(modified_mag)
 
     @staticmethod
-    def _deinsert(whole_image, secret_image_sizes) -> np.ndarray:
+    def _deinsert(whole_image) -> np.ndarray:
         """It crops the secret images from the whole image."""
-        v_pad = (whole_image.shape[0] - secret_image_sizes[0]) // 2
-        h_pad = whole_image.shape[1] - secret_image_sizes[1]
-        return whole_image[v_pad : v_pad + secret_image_sizes[0], h_pad - 1 : -1] // 100
+        return ImageExtractor(whole_image).extract()
