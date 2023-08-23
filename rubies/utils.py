@@ -47,14 +47,25 @@ class Utilities:
         return cv2.cvtColor(rgb_image, cv2.COLOR_BGR2GRAY)
 
     @staticmethod
-    def read_image(image_path: str, size: tuple = None) -> np.ndarray:
+    def read_image(image: str | np.ndarray, size: tuple | None = None) -> np.ndarray:
         """It reads the image."""
-        image = cv2.imread(image_path)
-        if image is None:
-            raise FileNotFoundError("Image not found.")
+        if isinstance(image, str):
+            # Read the carrier image.
+            return_image = cv2.imread(image)
+            if return_image is None:
+                raise FileNotFoundError("Image not found.")
+        elif isinstance(image, np.ndarray):
+            return_image = image
+        else:
+            raise TypeError("Invalid image type.")
         if size is not None:
-            image = cv2.resize(image, size)
-        return image
+            return_image = cv2.resize(return_image, size)
+        return return_image
+    
+    @staticmethod
+    def save_image(image: np.ndarray, path: str) -> None:
+        """It saves the image."""
+        cv2.imwrite(path, image)
 
     @staticmethod
     def ifft(magnitudes: np.ndarray, phases: np.ndarray) -> np.ndarray:

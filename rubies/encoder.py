@@ -9,19 +9,21 @@ from .utils import Utilities
 class Encoder:
     """It handles the encoding functionality."""
 
-    def __init__(self, carrier_image_path: str, secret_size: tuple) -> None:
+    def __init__(self, carrier_image: str | np.ndarray, secret_size: tuple) -> None:
         """It initializes the class."""
         self.secret_size = secret_size
         # Read the carrier image.
-        self._image = Utilities.read_image(carrier_image_path)
+        self._image = Utilities.read_image(carrier_image)
         # Get the LAB components of the image.
         self._lum, _ch_a, _ch_b = Utilities.split_to_lab_components(self._image)
         self._ch_a_mag = Utilities.get_magnitude(_ch_a)
         self._ch_b_mag = Utilities.get_magnitude(_ch_b)
         self._ch_a_phase = Utilities.get_phase(_ch_a)
         self._ch_b_phase = Utilities.get_phase(_ch_b)
+        # Store the encoded image.
+        self._encoded_image: np.ndarray = None
 
-    def encode(self, embed_img_a: str, embed_img_b: str) -> np.ndarray:
+    def encode(self, embed_img_a: str | np.ndarray, embed_img_b: str | np.ndarray) -> np.ndarray:
         """It encodes the images embedded into the carrier image."""
         # Recieve images.
         image_a = Utilities.read_image(embed_img_a, size=self.secret_size)
@@ -39,8 +41,14 @@ class Encoder:
 
         # Create the RGB image from LAB components.
         encoded_lab = Utilities.create_lab_from_complex(self._lum, chrom_a, chrom_b)
-
-        return Utilities.lab_to_rgb(encoded_lab)
+        self._encoded_image = Utilities.lab_to_rgb(encoded_lab)
+        return self._encoded_image
+    
+    def save(self, path: str) -> None:
+        """It saves the encoded image."""
+        if self._encoded_image is None:
+            raise ValueError("You should encode the images first.")
+        Utilities.save_image(self._encoded_image, path)
 
     def _embed_onto(self, chroma_x: str, secret_image: np.ndarray) -> np.ndarray:
         """It embeds one image into carrier."""

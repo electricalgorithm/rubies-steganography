@@ -22,6 +22,10 @@ class RubiesDecoder:
         # Extract the difference.
         self._diff_a = self._extract_difference(_enc_a_mag)
         self._diff_b = self._extract_difference(_enc_b_mag)
+
+        # Holds the decoded images.
+        self._decoded_a: np.ndarray = None
+        self._decoded_b: np.ndarray = None
     
     def decode(self, **kwargs) -> tuple[np.ndarray]:
         """It decodes the secret images from each chroma component."""
@@ -30,10 +34,17 @@ class RubiesDecoder:
         secret_image_b = self._deinsert(self._diff_b, **kwargs)
 
         # Scale back the secret images.
-        secret_image_a = Utilities.scale_back_from_float64_to_uint8(secret_image_a)
-        secret_image_b = Utilities.scale_back_from_float64_to_uint8(secret_image_b)
+        self._decoded_a = Utilities.scale_back_from_float64_to_uint8(secret_image_a)
+        self._decoded_b = Utilities.scale_back_from_float64_to_uint8(secret_image_b)
 
-        return (secret_image_a, secret_image_b)
+        return (self._decoded_a, self._decoded_b)
+    
+    def save(self, path_a: str, path_b: str) -> None:
+        """It saves the decoded images."""
+        if self._decoded_a is None or self._decoded_b is None:
+            raise ValueError("You should decode the images first.")
+        Utilities.save_image(self._decoded_a, path_a)
+        Utilities.save_image(self._decoded_b, path_b)
 
     @staticmethod
     def _extract_difference(modified_mag) -> np.ndarray:
