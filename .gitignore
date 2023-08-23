@@ -1,7 +1,10 @@
 # Image files
-.jpg
-.jpeg
-.png
+*.jpg
+*.jpeg
+*.png
+
+# main files
+main.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
