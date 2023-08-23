@@ -3,7 +3,6 @@ This module contains the Decoder class, which is responsible for decoding
 secret images from one image.
 """
 import numpy as np
-from .utils import Utilities
 from .decoder_base import RubiesDecoder
 
 
