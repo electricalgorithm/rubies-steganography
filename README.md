@@ -1,6 +1,47 @@
 # Rubie's Steganography
 This code implements the paper "Digital Image Steganography: An FFT Approach" by Tamer Rabie. It is a way to embedding two images to one carrier image.
 
+#### Encoding Algorithm
+```mermaid
+flowchart LR
+
+    A(Carrier Image)
+    B(Split to\nLAB components)
+    C[FFT]
+    D[FFT]
+    E(Add secret magnitudes to high\nfrequencies' magnitude)
+    F(Add secret magnitudes to high\nfrequencies' magnitude)
+    I(Secret Image A)
+    K(Secret Image B)
+    J(Grayscale Conversion)
+    L(Grayscale Conversion)
+    G[iFFT]
+    H[iFFT]
+    M(Combine to\nLAB components)
+    N(Encoded Image)
+    O(Scale and\nadd offset)
+    P(Scale and\nadd offset)
+
+    A --> B
+    B --> |Chrom-A| C
+    B --> |Chrom-B| D
+    B --> |Luminance| M
+    
+    C --> E
+    D --> F
+
+    E --> G
+    F --> H
+
+    I --> J --> O --> E
+    K --> L --> P --> F
+
+    G --> |New Chrom-A| M
+    H --> |New Chrom-B| M
+
+    M --> N
+```
+
 ### Installation
 ```bash
 ~$ pip install rubies
@@ -40,9 +81,9 @@ decoder.save("secret_image_a.png", "secret_image_b.png")
 # Import Rubie's Decoder.
 from rubies import SimpleDecoder
 # Create a decoder instance with encoded image and carrier image.
-decoder = SimpleDecoder("encoded_image.png", secret_image_sizes=(500, 500))
+decoder = SimpleDecoder("encoded_image.png")
 # Decode the secret images from the encoded image. Return values can be also used.
-secret_image_a, secret_image_b = decoder.decode()
+secret_image_a, secret_image_b = decoder.decode(secret_image_sizes=(500, 500))
 # Save the secret images.
 decoder.save("secret_image_a.png", "secret_image_b.png")
 ```
