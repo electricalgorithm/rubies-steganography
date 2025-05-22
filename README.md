@@ -1,4 +1,6 @@
 # Rubie's Steganography
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.15488035.svg)](https://doi.org/10.5281/zenodo.15488035)
+
 This code implements the paper "Digital Image Steganography: An FFT Approach" by Tamer Rabie. It is a way to embedding two images to one carrier image.
 
 ![Encoder-Decoder Diagram](./docs/diagram.png)
